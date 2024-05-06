@@ -2,18 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Animal : MonoBehaviour
 {
     GameManager gm;
-    
-
-    public int animal; //0 = bird
-    
-    
-
     Rigidbody rb;
+
+    public int animal; //0 = bird // 1= Fish
+
     public float birdMoveSpeed;
+    public float deerMoveSpeed;
+
+    public GameObject bloodSplat;
+
     bool isDead = false;
 
     // Start is called before the first frame update
@@ -21,19 +23,23 @@ public class Animal : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         gm = FindAnyObjectByType<GameManager>();
-        
 
-        // Destroy Bird
+        
         if (animal == 0)
         {
             transform.position = BirdSpawnPos();
-            //transform.localScale = new Vector3(1, Random.Range(.5f, 2), 1);
+        }
+
+        if (animal == 1)
+        {
+            transform.position = BirdSpawnPos();
+        }
+
+        if (animal == 3)
+        {
+            transform.position = DeerSpawnPos();
         }
     }
-
-    // Update is called once per frame
-    
-
     void FixedUpdate()
     {
         // set bird move speed
@@ -43,13 +49,22 @@ public class Animal : MonoBehaviour
             {
                 rb.velocity = new Vector3(birdMoveSpeed, 0, 0);
             }
-            
         }
-        
+        if (animal == 1)
+        {
+            if (isDead == false)
+            {
+                rb.velocity = new Vector3(birdMoveSpeed, 0, 0);
+            }
+        }
+            if (animal == 3)
+        {
+            if (isDead == false) 
+            {
+                rb.velocity = new Vector3(deerMoveSpeed, 0, 0);
+            }
+        }
     }
-
-    
-
     Vector3 BirdSpawnPos()
     {
         // set bird spawn point 
@@ -57,18 +72,46 @@ public class Animal : MonoBehaviour
         return new Vector3(-14, ySpawnPoint, 72);
     }
 
+    Vector3 DeerSpawnPos()
+    {
+        float zSpawnPoint = Random.Range(32, 10);
+        return new Vector3(-12, .5f, 32);
+    }
+
     private void OnMouseDown()
     {
-        if (gm.canShoot)
+        if (gm.canShoot && !gm.isGameOver)
         {
+
             if (animal == 0)
             {
+                Destroy(Instantiate(bloodSplat,transform.position, bloodSplat.transform.rotation),2);
                 rb.AddTorque(0, 0, Random.Range(-20, 20), ForceMode.Impulse);
                 animal = -1;
                 isDead = true;
                 rb.useGravity = true;
                 Destroy(gameObject, 5f);
                 gm.score++;
+            }
+
+            if (animal == 1)
+            {
+                Destroy(Instantiate(bloodSplat, transform.position, bloodSplat.transform.rotation), 2);
+                rb.AddTorque(0, 0, Random.Range(-20, 20), ForceMode.Impulse);
+                animal = -1;
+                isDead = true;
+                rb.useGravity = true;
+                Destroy(gameObject, 5f);
+                gm.score += 5;
+            }
+            if (animal == 3)
+            {
+                animal = -1;
+                isDead = true;
+                rb.AddTorque(0, 0, Random.Range(-20, 20), ForceMode.Impulse);
+                rb.useGravity = true;
+                Destroy(gameObject, 2f);
+                gm.score += 2;
             }
         }
     }

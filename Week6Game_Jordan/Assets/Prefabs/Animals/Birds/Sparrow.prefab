@@ -143,7 +143,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.26
+  m_Radius: 0.53
   m_Height: 0.66957575
   m_Direction: 1
   m_Center: {x: 0, y: 0.33830807, z: 0}
@@ -187,8 +187,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animal: 0
-  gravityMultiplier: 2
   birdMoveSpeed: 10
+  bloodSplat: {fileID: 6823200998282874702, guid: 8f8fe12323625f5499b2853dd2ad3e58,
+    type: 3}
 --- !u!1 &2047205224056000534
 GameObject:
   m_ObjectHideFlags: 0
