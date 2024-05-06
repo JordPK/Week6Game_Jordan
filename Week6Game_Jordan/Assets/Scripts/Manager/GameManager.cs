@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI finalScoreText;
     public TextMeshProUGUI timeLeftText;
+    public TextMeshProUGUI ammoText;   
 
     [Header("Audio")]
     public AudioSource aud1;
@@ -53,8 +54,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        Debug.Log(Time.timeScale);
         if (ui.isPaused == false && isGameStart)
         {
+
+            Time.timeScale = 1.0f;
 
             if (Input.GetKeyDown(KeyCode.R) && BulletCount < maxBullets)
             {
@@ -100,6 +105,10 @@ public class GameManager : MonoBehaviour
 
             // Time Left Text
             timeLeftText.text = "Time Left :" + Mathf.RoundToInt(timeLeft).ToString();
+
+            // Ammo Text
+
+            ammoText.text = "Ammo:" + BulletCount.ToString();
 
             if (score % 5 == 0 && score != 0)
             {

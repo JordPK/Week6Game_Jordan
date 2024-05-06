@@ -10,6 +10,7 @@ using UnityEngine.Rendering;
 public class uiManager : MonoBehaviour
 {
     [SerializeField] Slider volumeSlider;
+    [SerializeField] Slider sfxSlider;
     public Canvas gameUI;
     public Canvas pauseMenu;
     public Canvas gameOverUI;
@@ -17,6 +18,7 @@ public class uiManager : MonoBehaviour
     public Canvas difficultyMenu;
     public AudioSource BGM;
     public AudioSource UIAudio;
+    public AudioSource sfxAudio;
 
     public AudioClip clickSFX;
 
@@ -32,6 +34,14 @@ public class uiManager : MonoBehaviour
     void Start()
     {
         gm = FindAnyObjectByType<GameManager>();
+
+        float bgmVolume = PlayerPrefs.GetFloat("volumeSlider");
+        volumeSlider.value = bgmVolume;
+
+        float sfxVolume = PlayerPrefs.GetFloat("sfxSlider");
+        sfxSlider.value = sfxVolume;
+
+
         
     }   
 
@@ -39,11 +49,16 @@ public class uiManager : MonoBehaviour
     void Update()
     {
         BGM.volume = volumeSlider.value;
+        PlayerPrefs.SetFloat("volumeSlider", volumeSlider.value);
+
+        sfxAudio.volume = sfxSlider.value;
+        PlayerPrefs.SetFloat("sfxSlider", sfxSlider.value);
     }
 
     public void StartGame()
     {
         SceneManager.LoadScene(1);
+        
     }
     public void PauseGame()
     {
@@ -66,12 +81,16 @@ public class uiManager : MonoBehaviour
     {
        mainMenu.gameObject.SetActive(false);
        difficultyMenu.gameObject.SetActive(true);
+       volumeSlider.gameObject.SetActive(false);
+       sfxSlider.gameObject.SetActive(false);
     }
 
     public void BackToMainMenu()
     {
         difficultyMenu.gameObject.SetActive(false);
         mainMenu.gameObject.SetActive(true);
+        volumeSlider.gameObject.SetActive(true);
+        sfxSlider.gameObject.SetActive(true);
     }
     public void GameOverScreen()
     {
